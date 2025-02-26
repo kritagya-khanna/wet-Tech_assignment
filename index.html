@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAIT Quiz</title>
+    <style>
+        /* Basic styles for layout and aesthetics */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5e1c8;
+            color: #5c3d2e;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .quiz-container {
+            background: #e0c3a4;
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px #a08d76;
+        }
+        .option {
+            display: block;
+            margin: 10px 0;
+            padding: 12px;
+            background: #d6b798;
+            border: 2px solid transparent;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        .option:hover {
+            background: #c4a386;
+            border-color: #8c6239;
+        }
+        .option:active {
+            transform: scale(0.98);
+            background: #b29074;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        /* Styling for Next button */
+        .next {
+            background-color: #a67c52;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .next:hover {
+            background-color: #8c6239;
+        }
+        .next:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+    <h1>MAIT Quiz</h1>
+    <div class="quiz-container">
+        <p id="question">Loading...</p>
+        <div id="options"></div>
+        <p class="feedback" id="feedback"></p>
+        <button class="next" onclick="nextQuestion()">Next</button>
+    </div>
+    <script>
+        // Array of quiz questions, options, and correct answers
+        const quizData = [
+            { question: "In which year was MAIT established?", options: ["1995", "1999", "2001", "2005"], answer: "1999" },
+            { question: "What does MAIT stand for?", options: ["Maharaja Agrasen Institute of Technology", "Modern Academy of Information Technology", "Maharashtra Institute of Advanced Technology", "Management and Information Technology"], answer: "Maharaja Agrasen Institute of Technology" },
+            { question: "Which university is MAIT affiliated with?", options: ["Delhi University", "Guru Gobind Singh Indraprastha University", "Jawaharlal Nehru University", "Jamia Millia Islamia"], answer: "Guru Gobind Singh Indraprastha University" },
+            { question: "How many engineering disciplines does MAIT offer at the bachelor's level?", options: ["5", "8", "10", "13"], answer: "13" },
+            { question: "What is the intake capacity for the Computer Science and Engineering program?", options: ["120", "180", "240", "360"], answer: "360" },
+            { question: "Which body has approved MAIT?", options: ["University Grants Commission (UGC)", "All India Council for Technical Education (AICTE)", "National Board of Accreditation (NBA)", "National Assessment and Accreditation Council (NAAC)"], answer: "All India Council for Technical Education (AICTE)" },
+            { question: "What facilities are available on the MAIT campus?", options: ["Wi-Fi connectivity", "Modern laboratories", "Learning Resource Centre", "All of the above"], answer: "All of the above" },
+            { question: "What is the primary aim of establishing MAIT?", options: ["To promote quality education in Technology and Management", "To provide distance learning programs", "To offer online courses", "To focus solely on research"], answer: "To promote quality education in Technology and Management" },
+            { question: "Which society promoted the establishment of MAIT?", options: ["Maharaja Agrasen Technical Education Society", "Delhi Technical Education Society", "Indian Institute of Technology Society", "National Education Trust"], answer: "Maharaja Agrasen Technical Education Society" },
+            { question: "What is the current intake for the MBA program at MAIT?", options: ["60", "120", "180", "240"], answer: "180" }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        // Function to load the current question and options
+        function loadQuestion() {
+            document.getElementById("feedback").innerText = ""; // Clear previous feedback
+            const q = quizData[currentQuestionIndex];
+            document.getElementById("question").innerText = q.question;
+            const optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = ""; // Clear previous options
+            q.options.forEach(option => {
+                
+                const btn = document.createElement("button");
+                btn.classList.add("option"); // Add the desired class to the button
+                btn.innerText = option;
+                btn.onclick = () => checkAnswer(option);
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        // Function to check the selected answer
+        function checkAnswer(selectedOption) {
+            const correct = quizData[currentQuestionIndex].answer;
+            if (selectedOption === correct) {
+                score++;
+                document.getElementById("feedback").innerText = "Correct!";
+                document.getElementById("feedback").style.color = "green";
+            } else {
+                document.getElementById("feedback").innerText = "Wrong! The correct answer is " + correct;
+                document.getElementById("feedback").style.color = "red";
+            }
+        }
+
+        // Function to load the next question or display the final score
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                // Display final score after the last question
+                document.querySelector(".quiz-container").innerHTML = `<h2>Quiz Complete!</h2><p>Your score: ${score} / ${quizData.length}</p>`;
+            }
+        }
+
+        // Load the first question when the page loads
+        loadQuestion();
+    </script>
+</body>
+</html>
